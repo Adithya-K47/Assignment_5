@@ -11,9 +11,11 @@ int g = 300;//60
 int h = 385;//77
 int i = 290;//58
 
+float score = 0;
+
 //booleans for checking if the timer should start or not
-boolean timerstarted = true;
-boolean timerended = false;
+boolean timerstarted = false;
+boolean timerended = true;
 
 //determing the random color of the squares
 float randcol;
@@ -24,7 +26,10 @@ float randcol;
 void setup() {
   size(400,400);
   background(0);
+  frameRate(30);
   text("Click on the colored square as soon as it appears!",70,10);
+  constrain(mouseX, 0, 400);
+  constrain(mouseY, 0, 400);
 }
 
 
@@ -49,11 +54,25 @@ void setup() {
 void draw() {
  randcol = random(0,255);
  drawgraysquares();
-}
+ //starting the timer
+ if(score == 1) {
+ timerstarted = true;
+ timerended = false;
+ }
+ //timer mechanic
+ if(timerstarted){
+   frameCount = 0;
+   print(frameCount);
+   if(frameCount == 900){
+   timerended = true;
+   timerstarted = false;
+   }
+ }
+ }
 
 //function drawing squares
 void drawgraysquares() {
-  rectMode(CORNERS);
+ rectMode(CORNERS);
  fill(150);
  rect(a,a,b,b);
  rect(c,a,f,b);
