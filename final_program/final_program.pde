@@ -1,5 +1,8 @@
 //variables, integers and booleans-------------------------------------------------------------------
-
+int aa;
+int bb;
+int cc;
+int dd;
 //integers for common coordinate values
 int a = 15;//3
 int b = 105;//21
@@ -13,12 +16,16 @@ int i = 290;//58
 
 float score = 0;
 
+int bd = int(random(1,9));
+
 //booleans for checking if the timer should start or not
 boolean timerstarted = false;
 boolean timerended = true;
 
 //determing the random color of the squares
-float randcol;
+float randcol1;
+float randcol2;
+float randcol3;
 
 
 
@@ -52,8 +59,11 @@ void setup() {
 
 //draw function-------------------------------------------------------------
 void draw() {
- randcol = random(0,255);
+ randcol1 = random(0,255);
+ randcol2 = random(0,255);
+ randcol3 = random(0,255);
  drawgraysquares();
+ 
  //starting the timer
  if(score == 1) {
  timerstarted = true;
@@ -83,4 +93,78 @@ void drawgraysquares() {
  rect(a,g,b,h);
  rect(c,g,f,h);
  rect(i,g,e,h);
+}
+
+void getsquare(){
+
+if( bd == 1){
+  aa = a;
+  bb = a;
+  cc = b;
+  dd = b;
+}
+if( bd == 2){
+  aa = c;
+  bb = a;
+  cc = f;
+  dd = b;
+}
+if( bd == 3){
+  aa = i;
+  bb = a;
+  cc = e;
+  dd = b;
+}
+if( bd == 4){
+  aa = a;
+  bb = d;
+  cc = b;
+  dd = f;
+}
+if( bd == 5){
+  aa = c;
+  bb = d;
+  cc = f;
+  dd = f;
+}
+if( bd == 6){
+  aa = i;
+  bb = d;
+  cc = e;
+  dd = f;
+}
+if( bd == 7){
+  aa = a;
+  bb = g;
+  cc = b;
+  dd = h;
+}
+if( bd == 8){
+  aa = c;
+  bb = g;
+  cc = f;
+  dd = h;
+}
+if( bd == 9){
+  aa = i;
+  bb = g;
+  cc = e;
+  dd = h;
+}
+
+
+fill(randcol1,randcol2,randcol3);
+rect(aa,bb,cc,dd);
+}
+
+void mouseClicked (){
+if(mouseX>aa && mouseX<cc && mouseY>bb && mouseY<dd){
+  getsquare();
+}
+}
+
+void keyPressed(){
+  if (key == 'w'){
+    getsquare();
+  }
 }
