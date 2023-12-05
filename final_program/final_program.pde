@@ -1,5 +1,6 @@
 //variables, integers and booleans-------------------------------------------------------------------
 
+//no. of colums and rows
 //integers for common coordinate values
 int a = 15;//3
 int b = 105;//21
