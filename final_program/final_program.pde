@@ -1,29 +1,53 @@
 //variables, integers and booleans-------------------------------------------------------------------
 
-//integers for common coordinate values
-int a = 15;//3
-int b = 105;//21
-int c = 155;//31
-int d = 160;//32
-int e = 380;//76
-int f = 250;//50
-int g = 300;//60
-int h = 385;//77
-int i = 290;//58
+//no. of colums and rows
+int gridS = 3;
+//integer for setting an ID for a lit squre
+int targetID;
+//score counter.  is a lighter win condition is ok? as this is a skill based game, winning/losing is a subjective topic. clarify with prof.
+int score = 0;
+//variable for keeping track of timer
+int Tleft = 0;
+//variable to track timer after a square is lit
+int litT = 0;
+//tracking game start with a boolean
+boolean gameS = false;
 
-float score = 0;
+//defining the start screen
+void SScreen () {
+  background(255);
+  fill(0);
+  textSize(20);
+  //textFont(IF);
+  textAlign(CENTER, CENTER);
+  text("Press 1 for a 20 second timer", width/2,height/2-70);
+  text("Press 2 for a 30 second timer", width/2,height/2-50);
+  text("press 3 for a 60 second timer", width/2,height/20-10);
+  text("Click on each square as quick as possible",width/2,height/2+20);
+}
 
-//booleans for checking if the timer should start or not
-boolean timerstarted = false;
-boolean timerended = true;
-
-//determing the random color of the squares
-float randcol;
-
-
+//timer selection
+void keyPressed(){
+  //learned something new! exclamation mark means that when it is NOT something. Here, ! is used to tell function what to do when it is NOT gameS. 
+  if(!gameS){
+    if(key =='1'){
+      Tleft = 20*60;
+      gameS = true;
+    }
+    else if(key  == '2'){
+      Tleft = 30*60;
+      gameS = true;
+    }
+    else if(key =='3'){
+      Tleft = 60*60;
+      gameS = true;
+    }}}
 
 //setup function------------------------------------------------------------
 void setup() {
+  //Pfont IF; ----------------------------------------------------------------------------ask prof on how to load fonts
+  //IF = loadFont("InkFree-20.vlw");
+ //textFont(IF);
   size(400,400);
   background(0);
   frameRate(30);
@@ -52,35 +76,6 @@ void setup() {
 
 //draw function-------------------------------------------------------------
 void draw() {
- randcol = random(0,255);
- drawgraysquares();
- //starting the timer
- if(score == 1) {
- timerstarted = true;
- timerended = false;
- }
- //timer mechanic
- if(timerstarted){
-   frameCount = 0;
-   print(frameCount);
-   if(frameCount == 900){
-   timerended = true;
-   timerstarted = false;
-   }
- }
- }
 
-//function drawing squares
-void drawgraysquares() {
- rectMode(CORNERS);
- fill(150);
- rect(a,a,b,b);
- rect(c,a,f,b);
- rect(i,a,e,b);
- rect(a,d,b,f);
- rect(c,d,f,f);
- rect(i,d,e,f);
- rect(a,g,b,h);
- rect(c,g,f,h);
- rect(i,g,e,h);
-}
+
+ }
