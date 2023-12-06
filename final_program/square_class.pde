@@ -41,4 +41,4 @@ float centerY = pos.y + size / 2;
 float distance = dist(x, y, centerX, centerY);
 return distance < size / 2;
 }
-}
+}  

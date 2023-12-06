@@ -1,9 +1,5 @@
-//variables, integers and booleans-------------------------------------------------------------------
-int aa;
-int bb;
-int cc;
-int dd;
-
+int a = 230;
+int b = 250;
 //no. of squares x3
 int gridS = 3;
 //array list to store Square objects
@@ -57,6 +53,7 @@ squares.add(new Square(new PVector(i * (width / gridS), j * (height / gridS)), w
 
 
 void draw() {
+  //print(frameCount);
 //this code will happen when game is starting?
 if(!gameS) {
 SScreen();
@@ -120,6 +117,7 @@ background(255);  // Clear the background
 textSize(20);
 textAlign(CENTER, CENTER);
 text("Loss! Your score was less than 5!", width / 2, height / 2 - 20);
+
 } else {
 //display score if the player doesnt lose
 background(255);
@@ -129,7 +127,7 @@ text("Your score is: " + score, width / 2, height / 2 - 20);
 }
 }
 }
- }
+}
 
 
 
@@ -149,6 +147,9 @@ text("Your score is: " + score, width / 2, height / 2 - 20);
 //defining the start screen
 void SScreen() {
 background(255);
+rectMode(CORNER);
+fill(a, a, 250);
+rect(-1,-1,401,401);
 fill(0);
 textSize(20);
 textAlign(CENTER, CENTER);
@@ -161,16 +162,33 @@ text("Click on each square as quick as possible!", width / 2, height / 2 + 20);
 //changing timer
 void keyPressed() {
 if (!gameS) {
-//makes the game more dynamic.
-if (key == '1') {
+// makes the game more dynamic.
+switch (key) {
+case '1':
 Tleft = 20 * 60;
 gameS = true;
-} else if (key == '2') {
+break;
+case '2':
 Tleft = 30 * 60;
 gameS = true;
-} else if (key == '3') {
+break;
+case '3':
 Tleft = 60 * 60;
 gameS = true;
+break;
+case '5':
+changeColor();
+break;
+case '4':
+changeColorw();
+    }
+  }
 }
+
+void changeColor(){
+  a = 250;
 }
+
+void changeColorw(){
+  a = 230;
 }
