@@ -4,165 +4,173 @@ int bb;
 int cc;
 int dd;
 
-//integers for common coordinate values
-int a = 15;//3
-int b = 105;//21
-int c = 155;//31
-int d = 160;//32
-int e = 380;//76
-int f = 250;//50
-int g = 300;//60
-int h = 385;//77
-int i = 290;//58
+//no. of squares x3
+int gridS = 3;
+//array list to store Square objects
+ArrayList<Square> squares;
+//ID of the currently lit square
+int targetID;
+//score counter
+int score = 0;
+// timer variable
+int Tleft = 0;
+//timer to keep track of how long square is lit
+int litT = 0;
+//boolean for if the game's starting
+boolean gameS = false;
 
-float score = 0;	
 
-int bd = int(random(1,9));
 
-//booleans for checking if the timer should start or not
-boolean timerstarted = false;
-boolean timerended = true;
 
-//determing the random color of the squares
+//       ____       _                     _             _         _                   
+//      / ___|  ___| |_ _   _ _ __    ___| |_ __ _ _ __| |_ ___  | |__   ___ _ __ ___ 
+//      \___ \ / _ \ __| | | | '_ \  / __| __/ _` | '__| __/ __| | '_ \ / _ \ '__/ _ \
+//       ___) |  __/ |_| |_| | |_) | \__ \ || (_| | |  | |_\__ \ | | | |  __/ | |  __/
+//      |____/ \___|\__|\__,_| .__/  |___/\__\__,_|_|   \__|___/ |_| |_|\___|_|  \___|
+//                           |_|                                                      
+
 
 
 
 //setup function------------------------------------------------------------
 void setup() {
-  size(400,400);
-  background(0);
-  frameRate(30);
-  text("Click on the colored square as soon as it appears!",70,10);
-  constrain(mouseX, 0, 400);
-  constrain(mouseY, 0, 400);
+  size(400, 400);
+//initializing the array list
+squares = new ArrayList<Square>();
+//initialize the array list for squres
+for (int i = 0; i < gridS; i++) {
+for (int j = 0; j < gridS; j++) {
+//add square to list
+squares.add(new Square(new PVector(i * (width / gridS), j * (height / gridS)), width / gridS));
+}
+}
 }
 
 
+//       ____                           _             _         _                   
+//      |  _ \ _ __ __ ___      __  ___| |_ __ _ _ __| |_ ___  | |__   ___ _ __ ___ 
+//      | | | | '__/ _` \ \ /\ / / / __| __/ _` | '__| __/ __| | '_ \ / _ \ '__/ _ \
+//      | |_| | | | (_| |\ V  V /  \__ \ || (_| | |  | |_\__ \ | | | |  __/ | |  __/
+//      |____/|_|  \__,_| \_/\_/   |___/\__\__,_|_|   \__|___/ |_| |_|\___|_|  \___|
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-//draw function-------------------------------------------------------------
 void draw() {
- randcol1 = random(0,255);
- randcol2 = random(0,255);
- randcol3 = random(0,255);
- drawgraysquares();
+//this code will happen when game is starting?
+if(!gameS) {
+SScreen();
+}else{
+//Update the timer.
+if (Tleft > 0) {
+Tleft--;
+
+//display grid
+background(255);
+
+//check each square for displaying
+for (Square square : squares) {
+square.display();}
+
+//light up every 3 seconds
+if (frameCount % (3 * 60) == 0) {
+//if squre is lit reduce timer
+if (litT > 0) {
+litT--;
+//if lit timer reaches 0, make  lit false
+if (litT == 0) {squares.get(targetID).lit = false;}
+}
+//choose a new square
+targetID = int(random(squares.size()));
+//make it lit
+squares.get(targetID).LUp(random(255), random(255), random(255));
+//set the timer for the lit duration
+litT = 3 * 60;
+} else if (litT > 0) {
+//if no square is lit, timer will still reduce
+litT--;
+//if the lit timer reaches 0, turn off the lit
+if (litT == 0) {
+squares.get(targetID).lit = false;}
+}
+//if square is lit, check if player clicks over it
+if (litT > 0 && mousePressed) {
+//check each square to check for click on the lit square -------------------------------------------------------- ask prof is there a better way to do this for optimizing game. I was thinking if i could do this by directly tell the lit square to inform if mouse is over? maybe. im too sleepy
+for (Square square : squares) {
+if (square.has(mouseX, mouseY) && square.lit) {
+//player clicks lit squre and add score.
+score++;
+square.lit = false;
+litT = 0;
+break;
+}
+}
+}
+//display the score and timer  in the top right
+fill(0);
+textSize(20);
+textAlign(RIGHT, TOP);
+text("Score: " + score, width - 20, 20);
+text("Time Left: " + ceil(Tleft / 60.0), width - 20, 50);
+} else {
+//if player's score is less than 5 he loses. ---------------------------------------------------------------------ask prof for more ideas on how i can make win/lose condition better.
+if (score < 5) {
+//display loser msg
+background(255);  // Clear the background
+textSize(20);
+textAlign(CENTER, CENTER);
+text("Loss! Your score was less than 5!", width / 2, height / 2 - 20);
+} else {
+//display score if the player doesnt lose
+background(255);
+textSize(20);
+textAlign(CENTER, CENTER);
+text("Your score is: " + score, width / 2, height / 2 - 20);
+}
+}
+}
+ }
+
+
+
+
+//       _____                 _   _                                  --------------------------------------------------------- ask prof is ascii ok for making code clearer.
+//      |  ___|   _ _ __   ___| |_(_) ___  _ __  ___    __ _ _ __ ___ 
+//      | |_ | | | | '_ \ / __| __| |/ _ \| '_ \/ __|  / _` | '__/ _ \
+//      |  _|| |_| | | | | (__| |_| | (_) | | | \__ \ | (_| | | |  __/
+//      |_|  _\__,_|_|_|_|\___|\__|_|\___/|_|_|_|___/  \__,_|_|  \___|
+//        __| | ___ / _(_)_ __   ___  __| | | |__   ___ _ __ ___      
+//       / _` |/ _ \ |_| | '_ \ / _ \/ _` | | '_ \ / _ \ '__/ _ \     
+//      | (_| |  __/  _| | | | |  __/ (_| | | | | |  __/ | |  __/     
+//       \__,_|\___|_| |_|_| |_|\___|\__,_| |_| |_|\___|_|  \___|     
  
- //starting the timer
- if(score == 1) {
- timerstarted = true;
- timerended = false;
- }
- //timer mechanic
- if(timerstarted){
-   frameCount = 0;
-   print(frameCount);
-   if(frameCount == 900){
-   timerended = true;
-   timerstarted = false;
-   }
- }
- }
-
-//function drawing squares
-void drawgraysquares() {
- rectMode(CORNERS);
- fill(150);
- rect(a,a,b,b);
- rect(c,a,f,b);
- rect(i,a,e,b);
- rect(a,d,b,f);
- rect(c,d,f,f);
- rect(i,d,e,f);
- rect(a,g,b,h);
- rect(c,g,f,h);
- rect(i,g,e,h);
+ 
+ 
+//defining the start screen
+void SScreen() {
+background(255);
+fill(0);
+textSize(20);
+textAlign(CENTER, CENTER);
+text("Press 1 for a 20 second timer", width / 2, height / 2 - 70);
+text("Press 2 for a 30 second timer", width / 2, height / 2 - 40);
+text("Press 3 for a 60 second timer", width / 2, height / 2 - 10);
+text("Click on each square as quick as possible!", width / 2, height / 2 + 20);
 }
 
-void getsquare(){
-
-if( bd == 1){
-  aa = a;
-  bb = a;
-  cc = b;
-  dd = b;
-}
-if( bd == 2){
-  aa = c;
-  bb = a;
-  cc = f;
-  dd = b;
-}
-if( bd == 3){
-  aa = i;
-  bb = a;
-  cc = e;
-  dd = b;
-}
-if( bd == 4){
-  aa = a;
-  bb = d;
-  cc = b;
-  dd = f;
-}
-if( bd == 5){
-  aa = c;
-  bb = d;
-  cc = f;
-  dd = f;
-}
-if( bd == 6){
-  aa = i;
-  bb = d;
-  cc = e;
-  dd = f;
-}
-if( bd == 7){
-  aa = a;
-  bb = g;
-  cc = b;
-  dd = h;
-}
-if( bd == 8){
-  aa = c;
-  bb = g;
-  cc = f;
-  dd = h;
-}
-if( bd == 9){
-  aa = i;
-  bb = g;
-  cc = e;
-  dd = h;
-}
-
-
-fill(randcol1,randcol2,randcol3);
-rect(aa,bb,cc,dd);
-}
-
-void mouseClicked (){
-if(mouseX>aa && mouseX<cc && mouseY>bb && mouseY<dd){
-  getsquare();
+//changing timer
+void keyPressed() {
+if (!gameS) {
+//makes the game more dynamic.
+if (key == '1') {
+Tleft = 20 * 60;
+gameS = true;
+} else if (key == '2') {
+Tleft = 30 * 60;
+gameS = true;
+} else if (key == '3') {
+Tleft = 60 * 60;
+gameS = true;
 }
 }
-
-void keyPressed(){
-  if (key == 'w'){
-    getsquare();
-  }
 }
