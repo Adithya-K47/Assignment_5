@@ -1,5 +1,4 @@
 //making square class
-//inventory skill 28 and 30
 class Square {
 //position of square
 PVector pos;
@@ -13,7 +12,6 @@ boolean lit;
 Square(PVector pos, float size) {
 this.pos = pos;
 this.size = size;
-//inventory skill 2
 this.Fcolor = color(150);
 this.lit = false;
  }
